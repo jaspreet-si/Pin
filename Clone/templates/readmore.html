@@ -1,0 +1,225 @@
+{% extends 'base.html' %} {% block content %}
+<title>{{data.Pin_name}}</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+  .rmimg {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+.ssttiicckkyy{
+    position:sticky;
+    top:0px;
+} 
+
+    @media screen and (min-width:321px) and (max-width:374px) {
+
+
+    .commentbox {
+        height: 202px;
+        overflow: scroll;
+    }
+
+    }
+
+  .roundbtn {
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+  }
+  .cbi {
+    margin: auto;
+  }
+
+  .commentbox {
+    height: 202px;
+    margin: auto;
+    overflow: scroll;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .container{
+    margin-top: 6%;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 text-center">
+      <img src="{{data.Pin_img.url}}" class="rmimg mt-2 mb-5" alt=""  />
+    </div>
+
+    <div class="col-lg-6 text-center ">
+        <div class="ssttiicckkyy">
+
+
+      <h1>{{data.Pin_name}}</h1>
+      {% if data.Pin_by == user %}
+      <a
+      href="{% url 'DeletePin' data.id %}"
+      class="btn btn-outline-primary mt-3"
+      target="_blank"
+      >Delete Image</a>
+      <i class="fa-solid fa-trash" style="color: #ed0707"></i>
+      <br>
+      {% endif %}
+      <a
+        href="{{data.Pin_img.url}}"
+        
+        class="btn btn-outline-primary mt-3"
+        target="_blank"
+        >View in Full Screen</a
+      >
+      <br />
+      <button class="btn btn-success mt-3 roundbtn" onclick='downloadFile("{{data.Pin_img.url}}", "{{data.Pin_name}}")'>
+        <i class="fas fa-arrow-down fs-2"></i>
+      </button>
+      
+      <script>
+        function downloadFile(url, title) {
+          fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+              const blobUrl = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = blobUrl;
+              a.download = title;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(blobUrl);
+              alert("Pin Downloaded");
+            })
+            .catch(error => {
+              console.error("Error downloading the file:", error);
+            });
+        }
+      </script>
+      
+
+      <h5 class="mt-2">Pin By - {{data.Pin_by}}</h5>
+      <div class="commentdiv mt-3 text-center">
+        <div class="dlikeiv">
+          <h4>{{ number_of_likes }}</h4>
+          <form action="{% url 'LikePin' data.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="Pin_id" value="{{ data.id }}" class="btn fs-2">
+              {% if liked %}
+              <i class="fas fa-heart" style="color: #ff0000;"></i> <!-- Solid heart icon -->
+              {% else %}
+              <i class="far fa-heart" style="color:red;"></i> <!-- Outlined heart icon -->
+              {% endif %}
+            </button>
+          </form>
+        </div>
+
+        <form action="{% url 'Commentbox' Commentbox.id %}" method="post">
+          {% csrf_token %}
+          <input type="text" name="postid" id="postid" value="" hidden />
+          <input
+            type="text"
+            name="comment"
+            class="form-control w-50 cbi"
+            placeholder="Comment Here"
+            id=""
+            required
+          />
+          <input type="text" name="profileid" id="comment_by" value="" hidden />
+          {% if user.is_authenticated %}
+          <button type="submit" class="btn btn-outline-success mt-1">
+            Add Comment
+          </button>
+          {% endif %}
+        </form>
+        <script>
+          document.getElementById("postid").value = "{{data.id}}";
+          document.getElementById("comment_by").value = "{{user.id}}";
+        </script>
+
+        <br />
+
+        {% if comment %}
+        <div class="commentbox w-100 mt-2 mb-5">
+            <h4 class="text-center" >Comments</h4>
+            
+          {% for i in comment %}
+          <p class="mb-1">
+            {{i.Comment_by}} - {{i.Comment}}
+             {% if i.Comment_by == user %}
+            &nbsp;
+            <button
+              type="button"
+              class="btn btn-outline"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              
+            >
+            <a href="{% url 'deletecomment' i.id data.id %}" class="btn btn-outline">Delete</a>
+               <i class="fa-solid fa-trash" style="color: #ed0707"></i
+            >
+
+            
+<!-- 
+            <button
+              type="button"
+              class="btn btn-outline"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              <i class="fa-solid fa-trash" style="color: #ed0707"></i> -->
+            </button>
+            {% endif %}
+          
+
+          {% endfor %}
+        </div>
+        {% else %}
+        <h6 class="mt-2">Be first one to comment</h6>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you Sure?</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        delete {{i.comment}} ? <br />
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          No
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+        <a href="" >Yes Delete</a>
+      </button>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+ {% endblock %}

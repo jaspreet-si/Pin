@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  </head>
+  <style>
+    
+  </style>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'home' %}"><h3>Home</h3></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <li class="nav-item dropdown" >
+            
+              <img src="https://i.pinimg.com/736x/42/59/53/42595367d39100e5c14a29146465d59e.jpg"  style="height: 60px;width: 150%; border-radius: 50%;" <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+            
+            <ul class="dropdown-menu">
+              {% if user.is_authenticated%}
+              <li><a class="dropdown-item" href="{% url 'profileprofile' %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout'%}">Logout</a></li>
+              <li><a class="dropdown-item" href="{% url 'upload' %}">AddPin</a></li>
+              <li><hr class="dropdown-divider"></li>
+              {% else %}
+              <li><a class="dropdown-item" href="{% url 'signin'%}">Signin</a></li>
+              <li><a class="dropdown-item" href="{% url 'signup'%}">Sign-Up</a></li>
+              {% endif %}
+            </ul>
+          </li>
+          
+              
+            
+            <form class="d-flex" role="search" method="post" action="{% url 'search' %}">
+              {% csrf_token %}
+              <input class="form-control me-2" name='search' type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+     {% block content %}
+
+
+     {% endblock %}
+</body>
+</html>

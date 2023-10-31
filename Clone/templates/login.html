@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-in</title>
+    <style>
+		
+        body {
+            font-family: Arial, sans-serif;
+            
+			
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+			
+			
+			backdrop-filter: blur(20px);
+			
+			
+
+			
+        }
+
+        .center {
+            background-color:#dbd8dd;
+			
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 4px px 10px #8800ff;
+			height: 60vh;
+			width: 75vh;
+			align-items: center;
+			box-shadow:  30px 20px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            width: 450px;
+			
+            margin: 0 auto;
+        }
+
+        input[type="text" ],
+		
+        input[type="password"] {
+			text-decoration: solid;
+            width: 85%;
+			margin-left: 5%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #fffefe;
+            border-radius: 20px;
+			height: 4vh;
+			margin-top: 5%;
+			text-align: center;
+			font-size: 18px;
+			box-shadow: 8px 10px 10px rgba(0, 0, 0, 0.2);
+			font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+			
+
+        }
+
+        button[type="submit"] {
+            width: 30vh;
+			margin-left: 26%;
+			margin-top: 8%;
+			
+            padding: 10px;
+            background-color: #8800ff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+			height: 7vh;
+			text-decoration:solid;
+  
+			text-transform: uppercase;
+			transition: all 0.1s ease-in-out;
+			box-shadow: 3px 2px 10px #8800ff;
+			
+        }
+
+        button[type="submit"]:hover {
+            background-color: #a119f5;
+			color: rgba(255, 255, 255, 1);
+            box-shadow: 5px 2px 15px rgba(158, 1, 255, 0.4);
+
+			
+        }
+	
+    </style>
+</head>
+<body>
+	
+	
+    <div class="center">
+        <form action="" method="post" > 
+            {% csrf_token %}
+			<h2 style="color: #8800ff; text-align: center; text-shadow:3px 2px 20px #8800ff; ;">Welcome</h2>
+            <input type="text" name="username" placeholder="Username" style="color: #8800ff;"><br>
+            <input type="password" name="password" placeholder="Password" style="color: #8800ff;"><br>
+            <button type="submit">sign-in</button><br><br><br>
+
+			
+        
+		<h3><a href="{% url 'signup' %}" style="margin: 41%;align-self: center;">SIGN-UP</a></h3>
+
+         </form>
+		
+
+    </div>
+
+
+</body>
+</html>

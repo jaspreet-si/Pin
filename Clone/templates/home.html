@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <title>Pinterest</title>
+
+  <style>
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 10px;
+      content: center;
+      text-align: center;
+    }
+
+    .floating-card {
+      transition: transform 0.3s ease;
+      margin: 8px;
+      width: calc(20% - 16px); /* Adjust the width and margin as needed */
+      overflow: hidden; /* Hide overflowing content */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    }
+
+    .floating-card:hover {
+      transform: scale(1.05); /* Scale the card on hover */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+    }
+
+    .card-img-top {
+      border-radius: 10px;
+      width: 100%;
+      height: 250px; /* Maintain aspect ratio */
+      display: block; /* Remove default image spacing */
+    }
+  </style>
+
+  <div class="card-container">
+    {% for i in data %}
+    <div class="floating-card">
+      <a href="{% url 'readMore' i.id %}">
+        <img src="{{ i.Pin_img.url }}"  class="card-img-top">
+      </a>
+      {{i.Pin_by}}
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}
